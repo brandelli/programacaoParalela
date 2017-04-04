@@ -1,3 +1,7 @@
+casa
 ssh portoalegre\\<matricula>@sparta.pucrs.br
 ssh -o PasswordAuthentication=yes <Usuário>@marfim.lad.pucrs.br
+-----------------------------------------------------------
 
+Pucrs
+ssh px12804@marfim.lad.pucrs.br 
