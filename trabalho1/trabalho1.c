@@ -1,30 +1,75 @@
 #include <stdio.h>
 #include "mpi.h"
 
-main(int argc, char** argv)
-{
-int my_rank;  // Identificador do processo
-int proc_n;   // Número de processos
-int source;   // Identificador do proc.origem
-int dest;     // Identificador do proc. destino
-int tag = 50; // Tag para as mensagens
-int work = 1000; //numero vetores para ordenar
-MPI_Status status; // Status de retorno
+main(int argc, char** argv){
+	int my_rank;  // Identificador do processo
+	int proc_n;   // Número de processos
+	int work = 20; //numero vetores para ordenar
+	int sending = 0;
+	int receiving;
 
-MPI_Init (&argc , & argv);
+	MPI_Init (&argc , & argv);
+	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
+	MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
+	MPI_Status status; // Status de retorno
 
-MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
-MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
+	if (my_rank != 0){
+		//escravo
+		while(1){
+			MPI_Recv(receiving, 0, MPI_INT, 0, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 
-if (my_rank != 0){
-   //escravo
-   sprintf(message, "Greetings from process %d!", my_rank);
-   dest = 0;
-   MPI_Send (message, strlen(message)+1, MPI_CHAR,dest, tag, MPI_COMM_WORLD);
-}else{
-   //mestre
-   MPI_Recv (message, 100, MPI_CHAR , source, tag, MPI_COMM_WORLD, &status);
-   printf("%s\n", message);
+			if(0){ //acho que aqui vamos usar o status ou mandar alguma coisa para sinalizar o termino
+				return 1;
+			}
+
+			//faz o qsort
+			MPI_Send(receiving, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
+		}
+	}else{
+		
+	    //mestre
+		//manda a primeira leva de trabalho 
+		for (int slave = 1; slave < proc_n; slave++){
+			MPI_Send(sending, 0, MPI_INT, slave, 1, MPI_COMM_WORLD);
+			sending++;
+			work--;
+		}
+
+		//fica mandando trabalho conforme recebe a devolucao
+		while(work>0){
+			MPI_Recv(receiving, 0, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+			MPI_Send(sending, 0, MPI_INT, status.MPI_SOURCE, 1, MPI_COMM_WORLD);
+			printf("%d",receiving);
+			sending++;
+			work--;
+		}
+
+		//verificar a chegada da ultima carga de trabalho
+
+
+		//matar escravos
+
+	}
+	MPI_Finalize();
 }
-MPI_Finalize();
-}
+
+/*
+MPI_Send(
+    void* data,
+    int count,
+    MPI_Datatype datatype,
+    int destination,
+    int tag,
+    MPI_Comm communicator)
+*/
+
+/*
+MPI_Recv(
+    void* data,
+    int count,
+    MPI_Datatype datatype,
+    int source,
+    int tag,
+    MPI_Comm communicator,
+    MPI_Status* status)
+*/
