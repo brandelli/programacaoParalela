@@ -5,3 +5,4 @@ ssh -o PasswordAuthentication=yes <Usuário>@marfim.lad.pucrs.br
 
 Pucrs
 ssh px12804@marfim.lad.pucrs.br 
+sshfs pp12804@marfim.lad.pucrs.br:/home/pp12804 ~/ladhome

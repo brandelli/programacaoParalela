@@ -12,7 +12,9 @@ main(int argc, char** argv){
 	MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
 	MPI_Status status; // Status de retorno
+	
 
+	
 	if (my_rank != 0){
 		//escravo
 		while(1){
@@ -23,6 +25,7 @@ main(int argc, char** argv){
 			}
 
 			//faz o qsort
+
 			MPI_Send(receiving, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		}
 	}else{
