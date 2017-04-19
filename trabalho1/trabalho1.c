@@ -5,7 +5,7 @@ main(int argc, char** argv){
 	int my_rank;  // Identificador do processo
 	int proc_n;   // Número de processos
 	int work = 20; //numero vetores para ordenar
-	int sending = 0;
+	int sending = 20;
 	int receiving;
 
 	MPI_Init (&argc , & argv);
@@ -13,7 +13,6 @@ main(int argc, char** argv){
 	MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
 	MPI_Status status; // Status de retorno
 	
-
 	
 	if (my_rank != 0){
 		//escravo
@@ -25,7 +24,7 @@ main(int argc, char** argv){
 			}
 
 			//faz o qsort
-
+			sending--;
 			MPI_Send(receiving, 0, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		}
 	}else{
@@ -39,12 +38,16 @@ main(int argc, char** argv){
 		}
 
 		//fica mandando trabalho conforme recebe a devolucao
-		while(work>0){
+		while(work > 0){
+			MPI_Recv(receiving, 0, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+			MPI_Send(sending, 0, MPI_INT, status.MPI_SOURCE, 1, MPI_COMM_WORLD);
+			work--;
+		}
+
+		while(sending > 0){
 			MPI_Recv(receiving, 0, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
 			MPI_Send(sending, 0, MPI_INT, status.MPI_SOURCE, 1, MPI_COMM_WORLD);
 			printf("%d",receiving);
-			sending++;
-			work--;
 		}
 
 		//verificar a chegada da ultima carga de trabalho
