@@ -5,23 +5,26 @@
 #define ROWS 1000
 #define COLUMNS 100000
 
+//declaração da função utilizada pelo qsort
 int comp(const void* a, const void* b);
 
 void main (int argc, const char* argv[]){
   clock_t start, end;
   double total_time;
-  int **vet = malloc(ROWS * sizeof(int *));
+  //faz a alocação da matriz
+  int **vetor = malloc(ROWS * sizeof(int *));
+  //popula a matriz com arrays com valores aleatorios
   for (int i = 0; i < ROWS; i++){
-    vet[i] = malloc(COLUMNS * sizeof(int));
+    vetor[i] = malloc(COLUMNS * sizeof(int));
     for (int j = 0; j < COLUMNS; j++){
-      vet[i][j] = rand()%COLUMNS;
+      vetor[i][j] = rand()%COLUMNS;
     }
   }
-
+  start = clock();
+  //faz a ordenação dos vetores
   for (int i = 0; i < ROWS; i++){
-    qsort(vet[i], COLUMNS, sizeof(int), comp);
+    qsort(vetor[i], COLUMNS, sizeof(int), comp);
   }
-  free(vet);
   end = clock();
   total_time = ((double) (end - start)) / CLOCKS_PER_SEC;
   printf("%f segundos\n",total_time);
