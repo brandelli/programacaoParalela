@@ -8,6 +8,9 @@
 int compare(const void* a, const void* b);
 
 void main (int argc, const char* argv[]){
+  clock_t start, end;
+  double total_time;
+  start = clock();
   int **vet = malloc(ROWS * sizeof (int *));
   for (int i = 0; i < ROWS; i++){
     vet[i] = malloc(COLUMNS * sizeof(int));
@@ -32,6 +35,9 @@ void main (int argc, const char* argv[]){
     printf("\n");
   }
   free(vet);
+  end = clock();
+  cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+  printf("%f segundos\n",cpu_time_used);
 }
 
 int compare (const void* a, const void* b){
