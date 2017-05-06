@@ -3,7 +3,7 @@
 
 #define ARRAY_SIZE 40      // trabalho final com o valores 10.000, 100.000, 1.000.000
 
-void bs(int n, int * vetor){
+void bubbleSort(int n, int * vetor){
     int c=0, d, troca, trocou =1;
 
     while (c < (n-1) & trocou ){
@@ -22,12 +22,11 @@ void bs(int n, int * vetor){
 
 int main(){
     int vetor[ARRAY_SIZE];
-    int i;
 
-    for (i=0 ; i<ARRAY_SIZE; i++)              /* init array with worst case for sorting */
+    for(int i = 0 ; i<ARRAY_SIZE; i++){
         vetor[i] = ARRAY_SIZE-i;
-   
-    bs(ARRAY_SIZE, vetor);                     /* sort array */
+    }
 
+    bubbleSort(ARRAY_SIZE, vetor);
     return 0;
 }

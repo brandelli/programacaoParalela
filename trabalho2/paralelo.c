@@ -1,58 +1,101 @@
 #include <stdio.h>
 #include "mpi.h"
-#define ROWS 1000
-#define COLUMNS 100000
+#define ARRAY_SIZE 10000
+#define DELTA 100
 
-int comp(const void* a, const void* b);
+void bubbleSort(int size, int *array); //metodo que faz o ordenamento
+int * interleaving(int size,int *array); //metodo que faz a intercalação dos arrays vindos dos filhos
+void initializeArray(int size, int *array); // metodo que inicializa o array na ordem inversa
+int leftChild(int proc); // metodo que retorna o numero do processo filho a esquerda
+int rightChild(int proc); // metodo que retorna o numero do processo filho a direita
 
 void main(int argc, char** argv){
-
     int my_rank;  // Identificador do processo
     int proc_n;   // Número de processos
-    int sent = 0; //numero de vetores enviados para os escravos
-    int **vet = malloc(ROWS * sizeof(int *));
-    double start, end;
-    MPI_Init (&argc , & argv);
+    int a_size;   //guarda o tamanho do array dentro do processo
+    MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &my_rank);
     MPI_Comm_size(MPI_COMM_WORLD, &proc_n);
     MPI_Status status; // Status de retorno
-
-
     MPI_Init();
     my_rank = MPI_Comm_rank();  // pega pega o numero do processo atual (rank)
 
-    // recebo vetor
-
-    if ( my_rank != 0 ){
-       MPI_Recv ( vetor, pai);                       // não sou a raiz, tenho pai
-       MPI_Get_count(&Status, MPI_INT, &tam_vetor);  // descubro tamanho da mensagem recebida
+    if (my_rank != 0){
+       MPI_Recv (array, pai);                       // não sou a raiz, tenho pai
+       MPI_Get_count(&status, MPI_INT, &v_size);  // descubro tamanho da mensagem recebida
     }else{
-       tam_vetor = VETOR_SIZE;               // defino tamanho inicial do vetor
-       Inicializa( vetor, tam_vetor );      // sou a raiz e portanto gero o vetor - ordem reversa
+       v_size = ARRAY_SIZE;               // defino tamanho inicial do array
+       initializeArray(array, v_size);    // sou a raiz e portanto gero o array - ordem reversa
     }
     // dividir ou conquistar?
-    if(tam_vetor <= delta){
-       BubbleSort (vetor);  // conquisto
+    if(v_size <= DELTA){
+       bubbleSort(array);  // conquisto
     }else{
         // dividir
         // quebrar em duas partes e mandar para os filhos
-        MPI_Send ( &vetor[0], filho esquerda, tam_vetor/2 );  // mando metade inicial do vetor
-        MPI_Send ( &vetor[tam_vetor/2], filho direita , tam_vetor/2 );  // mando metade final
+        MPI_Send (&array[0], filho esquerda, v_size/2);  // mando metade inicial do array
+        MPI_Send (&array[v_size/2], filho direita , v_size/2);  // mando metade final
         // receber dos filhos
-        MPI_Recv ( &vetor[0], filho esquerda);            
-        MPI_Recv ( &vetor[tam_vetor/2], filho direita);   
-        // intercalo vetor inteiro     
-        Intercala ( vetor );
+        MPI_Recv (&array[0], filho esquerda);            
+        MPI_Recv (&array[v_size/2], filho direita);   
+        // intercalo array inteiro     
+        interleaving(array,size);
     }
     // mando para o pai
-    if ( my_rank !=0 )
-       MPI_Send ( vetor, pai, tam_vetor );  // tenho pai, retorno vetor ordenado pra ele
+    if (my_rank != 0)
+       MPI_Send (array, pai, v_size);  // tenho pai, retorno array ordenado pra ele
     else
-       Mostra ( vetor );                    // sou o raiz, mostro vetor
+       Mostra (array);                    // sou o raiz, mostro array
 
     MPI_Finalize();
 }
 
-int comp (const void* a, const void* b){
-  return *((const int*) a) - *((const int*) b);
+void bubbleSort(int n, int *array){
+    int c=0, d, troca, trocou =1;
+
+    while (c < (n-1) & trocou){
+        trocou = 0;
+        for (d = 0 ; d < n - c - 1; d++){
+            if (array[d] > array[d+1]){
+                troca      = array[d];
+                array[d]   = array[d+1];
+                array[d+1] = troca;
+                trocou = 1;
+            }
+        }
+        c++;
+    }
+}
+
+int * interleaving(int tam,int *array){
+    int *array_auxiliar;
+    int i1, i2, i_aux;
+
+    array_auxiliar = (int *)malloc(sizeof(int) * tam);
+
+    i1 = 0;
+    i2 = tam / 2;
+
+    for (i_aux = 0; i_aux < tam; i_aux++) {
+        if (((array[i1] <= array[i2]) && (i1 < (tam / 2)))
+            || (i2 == tam))
+            array_auxiliar[i_aux] = array[i1++];
+        else
+            array_auxiliar[i_aux] = array[i2++];
+    }
+    return array_auxiliar;
+}
+
+void initializeArray(int size, int *array){
+    for(int i = 0 ; i < size; i++){
+        array[i] = size-i;
+    }
+}
+
+int leftChild(int proc){
+    return proc * 2 + 1;
+}
+
+int rightChild(int proc){
+    return proc * 2 + 2;
 }
