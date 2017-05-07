@@ -1,0 +1,38 @@
+------------------------------tempos---------------------------
+1 processo - 10000 elementos - 0.448 segundos
+1 processo - 100000 elementos - 44.74 segundos
+1 processo - 1000000 elementos - 74 minutos 36 segundos
+
+-------------------- sem ajuda do processo pai------------------
+3 processos - 10000 elementos - xxxxxxxxx segundos
+3 processos - 100000 elementos - xxxxxxxxx segundos
+3 processos - 1000000 elementos - xxxxxxxxx segundos
+
+7 processos - 10000 elementos - xxxxxxxxx segundos
+7 processos - 100000 elementos - xxxxxxxxx segundos
+7 processos - 1000000 elementos - xxxxxxxxx segundos
+
+15 processos - 10000 elementos - xxxxxxxxx segundos
+15 processos - 100000 elementos - xxxxxxxxx segundos
+15 processos - 1000000 elementos - xxxxxxxxx segundos
+
+31 processos - 10000 elementos - xxxxxxxxx segundos
+31 processos - 100000 elementos - xxxxxxxxx segundos
+31 processos - 1000000 elementos - xxxxxxxxx segundos
+
+-------------------- com ajuda do processo pai------------------
+3 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
+3 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
+3 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx
+
+7 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
+7 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
+7 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx
+
+15 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
+15 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
+15 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx
+
+31 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
+31 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
+31 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx

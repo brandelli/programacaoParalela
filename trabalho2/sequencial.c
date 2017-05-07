@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define ARRAY_SIZE 40      // trabalho final com o valores 10.000, 100.000, 1.000.000
+#define ARRAY_SIZE 10000      // trabalho final com o valores 10.000, 100.000, 1.000.000
 
 void bubbleSort(int n, int * vetor){
     int c=0, d, troca, trocou =1;
