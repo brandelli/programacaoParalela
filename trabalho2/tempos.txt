@@ -4,35 +4,35 @@
 1 processo - 1000000 elementos - 74 minutos 36 segundos
 
 -------------------- sem ajuda do processo pai------------------
-3 processos - 10000 elementos - xxxxxxxxx segundos
-3 processos - 100000 elementos - xxxxxxxxx segundos
-3 processos - 1000000 elementos - xxxxxxxxx segundos
+3 processos - 10000 elementos - 0.183005 segundos
+3 processos - 100000 elementos - 11.867008 segundos
+3 processos - 1000000 elementos - 1127.099733 segundos
 
-7 processos - 10000 elementos - xxxxxxxxx segundos
-7 processos - 100000 elementos - xxxxxxxxx segundos
-7 processos - 1000000 elementos - xxxxxxxxx segundos
+7 processos - 10000 elementos - 0.085417 segundos
+7 processos - 100000 elementos - 2.792931 segundos
+7 processos - 1000000 elementos - 281.87805 segundos
 
-15 processos - 10000 elementos - xxxxxxxxx segundos
-15 processos - 100000 elementos - xxxxxxxxx segundos
-15 processos - 1000000 elementos - xxxxxxxxx segundos
+15 processos - 10000 elementos - 0.074123 segundos
+15 processos - 100000 elementos - 0.828235 segundos
+15 processos - 1000000 elementos - 74,065329 segundos
 
-31 processos - 10000 elementos - xxxxxxxxx segundos
-31 processos - 100000 elementos - xxxxxxxxx segundos
-31 processos - 1000000 elementos - xxxxxxxxx segundos
+31 processos - 10000 elementos - 0.067308 segundos
+31 processos - 100000 elementos - 0.380275 segundos
+31 processos - 1000000 elementos - 35.332168 segundos
 
 -------------------- com ajuda do processo pai------------------
-3 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
-3 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
-3 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx
+3 processos - 10000 elementos - 0.051036 segundos
+3 processos - 100000 elementos - 4.995525 segundos
+3 processos - 1000000 elementos - 500.432225 segundos
 
-7 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
-7 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
-7 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx
+7 processos - 10000 elementos - 0.012394 segundos
+7 processos - 100000 elementos - 0.934461 segundos
+7 processos - 1000000 elementos - 92.82883 segundos
 
-15 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
-15 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
-15 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx
+15 processos - 10000 elementos - 006987 segundos
+15 processos - 100000 elementos - 0.331260 segundos
+15 processos - 1000000 elementos - 21.098152 segundos
 
-31 processos - 10000 elementos - xxxxxxxxx segundos - Delta xxx
-31 processos - 100000 elementos - xxxxxxxxx segundos - Delta xxx
-31 processos - 1000000 elementos - xxxxxxxxx segundos - Delta xxx
+31 processos - 10000 elementos - 0.007021 segundos
+31 processos - 100000 elementos - 0.111582 segundos
+31 processos - 1000000 elementos - 9.490481 segundos 

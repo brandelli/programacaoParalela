@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "mpi.h"
-#define ARRAY_SIZE 100
+#define ARRAY_SIZE 1000000
 
 void bubbleSort(int size, int *array); //metodo que faz o ordenamento
 void initializeArray(int size, int *array); // metodo que inicializa o array na ordem inversa
 void showArray(int *array);
-int * interleaving(int size,int *array); //metodo que faz a intercalação dos arrays vindos dos filhos
+int * interleaving(int size,int size_child,int *array); //metodo que faz a intercalação dos arrays vindos dos filhos
 int father(int proc); // metodo que retorna o pai de um processo
 int leftChild(int proc); // metodo que retorna o numero do processo filho a esquerda
 int rightChild(int proc); // metodo que retorna o numero do processo filho a direita
@@ -13,6 +13,7 @@ int calculateDelta(int size, int proc_n);
 
 void main(int argc, char** argv){
     int* aux; // usado para armazenar o array que volta da intercalação dos arrays
+    int size_child; // tamanho de cada processo filho
     int array[ARRAY_SIZE]; //inicia o array que será ordenado
     int count;    // faz o receive do tamanho do array pelo MPI_GET_count
     int my_rank;  // Identificador do processo
@@ -38,20 +39,22 @@ void main(int argc, char** argv){
        initializeArray(a_size,array);    // inicializa o array na ordem reversa
        delta = calculateDelta(ARRAY_SIZE,proc_n);
     }
-    // dividir ou conquistar
-    if(a_size <= delta){
+    // verifica se divide ou conquista
+    if(a_size < 2 * delta){
+       // conquista
        bubbleSort(a_size,array);  // conquisto
        MPI_Send(array,a_size,MPI_INT,father(my_rank), 1, MPI_COMM_WORLD);
     }else{
-        // dividir
-        // quebrar em duas partes e mandar para os filhos
-        MPI_Send (&array[0],(a_size/2),MPI_INT,leftChild(my_rank), 1, MPI_COMM_WORLD);  // mando metade inicial do array
-        MPI_Send (&array[a_size/2],(a_size/2),MPI_INT,rightChild(my_rank),1, MPI_COMM_WORLD);  // mando metade final
+        // divide
+        size_child = (a_size - delta)/2; // subtrai o delta do tamanho atual e divide por dois, tendo assim o tamanho de cada filho
+        MPI_Send (&array[0],size_child,MPI_INT,leftChild(my_rank), 1, MPI_COMM_WORLD);  //  mando uma parte para o filho da esquerda
+        MPI_Send (&array[size_child],size_child,MPI_INT,rightChild(my_rank),1, MPI_COMM_WORLD);  // mando uma parte para o filho da direita
+        bubbleSort(a_size - 2 * size_child,&array[2 * size_child]); //ordeno metade do array localmente enquanto espero resposta 
         // receber dos filhos
         MPI_Recv (&array[0],a_size,MPI_INT,leftChild(my_rank),MPI_ANY_TAG, MPI_COMM_WORLD, &status);            
-        MPI_Recv (&array[a_size/2],a_size,MPI_INT,rightChild(my_rank),MPI_ANY_TAG, MPI_COMM_WORLD, &status);   
+        MPI_Recv (&array[size_child],a_size,MPI_INT,rightChild(my_rank),MPI_ANY_TAG, MPI_COMM_WORLD, &status);   
         // intercalo array inteiro     
-        aux = interleaving(a_size,array);
+        aux = interleaving(a_size,size_child,array);
         if (my_rank != 0)
            MPI_Send(aux,a_size,MPI_INT,father(my_rank), 1, MPI_COMM_WORLD);
     }
@@ -80,23 +83,30 @@ void bubbleSort(int n, int *array){
     }
 }
 
-int * interleaving(int size,int *array){
+int * interleaving(int size,int size_child,int *array){
     int *array_auxiliar;
-    int i1, i2, i_aux;
-
+    int i1,size_i1,i2,size_i2,i3,i_aux;
     array_auxiliar = (int *)malloc(sizeof(int) * size);
 
+    //defino o inicio e o limite de cada array que será intercalado
     i1 = 0;
-    i2 = size / 2;
+    size_i1 = size_child;
+    i2 = size_i1;
+    size_i2 = 2 * size_child;
+    i3 = size_i2;
 
     for (i_aux = 0; i_aux < size; i_aux++) {
-        if (((array[i1] <= array[i2]) && (i1 < (size / 2)))
-            || (i2 == size))
+        if((array[i1] <= array[i2]) && (array[i1] <= array[i3]) && (i1 < size_child) || ((i2 == (size_i2))
+                && (i3 == size))){
             array_auxiliar[i_aux] = array[i1++];
-        else
-            array_auxiliar[i_aux] = array[i2++];
+        }else{
+            if ((array[i2] <= array[i3]) && (i2 < (size_i2))
+                || (i3 == size))
+                array_auxiliar[i_aux] = array[i2++];
+            else
+                array_auxiliar[i_aux] = array[i3++];
+        }
     }
-
     return array_auxiliar;
 }
 
@@ -113,7 +123,7 @@ void showArray(int *array){
 }
 
 int father(int proc){
-    return (proc-1)/2;
+    return (proc-1) / 2;
 }
 
 int leftChild(int proc){
@@ -125,5 +135,5 @@ int rightChild(int proc){
 }
 
 int calculateDelta(int size, int proc_n){
-    return size/((proc_n + 1)/2);
+    return size / proc_n;
 }
