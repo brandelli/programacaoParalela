@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "mpi.h"
-#define ARRAY_SIZE 100
+#define ARRAY_SIZE 1000000
 
 void bubbleSort(int size, int *array); //metodo que faz o ordenamento
 void initializeArray(int size, int *array); // metodo que inicializa o array na ordem inversa
