@@ -1,3 +1,5 @@
+Bruno Brandelli - Rodrigo Pacheco
+
 questao 1
 2 processos
 Hostname: "atlantica06" Rank: "0" Size: "2"
