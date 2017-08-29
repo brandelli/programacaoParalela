@@ -1,0 +1,43 @@
+questao 1
+2 processos
+Hostname: "atlantica06" Rank: "0" Size: "2"
+Hostname: "atlantica07" Rank: "1" Size: "2"
+
+4 processos
+Hostname: "atlantica06" Rank: "0" Size: "4"
+Hostname: "atlantica07" Rank: "1" Size: "4"
+Hostname: "atlantica06" Rank: "2" Size: "4"
+Hostname: "atlantica07" Rank: "3" Size: "4"
+
+8 processos 
+Hostname: "atlantica06" Rank: "2" Size: "8"
+Hostname: "atlantica06" Rank: "0" Size: "8"
+Hostname: "atlantica07" Rank: "3" Size: "8"
+Hostname: "atlantica07" Rank: "1" Size: "8"
+Hostname: "atlantica06" Rank: "4" Size: "8"
+Hostname: "atlantica07" Rank: "5" Size: "8"
+Hostname: "atlantica07" Rank: "7" Size: "8"
+Hostname: "atlantica06" Rank: "6" Size: "8"
+
+-------------------------------------------------
+questao 2
+2 processos
+Greetings from process 1!
+
+4processos
+Greetings from process 1!
+Greetings from process 2!
+Greetings from process 3!
+
+8 processos
+Greetings from process 1!
+Greetings from process 2!
+Greetings from process 3!
+Greetings from process 4!
+Greetings from process 5!
+Greetings from process 6!
+Greetings from process 7!
+
+----------------------------------------------
+questao 3
+
